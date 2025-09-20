@@ -1,12 +1,13 @@
 import React from "react";
 import axios from "axios";
-import { Table, Container, Button, Spinner } from "react-bootstrap";
+import { Table, Container, Button, Spinner, Alert } from "react-bootstrap";
 
 const baseUrl = "https://68ce761d6dc3f350777f0bfa.mockapi.io/crud";
 
 const HomePage = () => {
   const [employees, setEmployees] = React.useState();
   const [loading, setLoading] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
 
   React.useEffect(() => {
     getData();
@@ -26,8 +27,24 @@ const HomePage = () => {
         setLoading(false);
       });
   };
+
+  const handleDelete=async(id)=>{
+     try{
+      await axios.delete(`${baseUrl}/${id}`)
+      setSuccess(true)
+      setTimeout(()=>{
+        setSuccess(false)
+      },3000)
+      setEmployees((prev) => prev.filter((emp) => emp.id !== id));
+     }catch (err){
+        console.log("Deletion Not Done:" ,err)
+     }
+  }
+
+
   return (
     <Container className="tableContainer">
+      {success && <Alert variant="success">Record Deleted Successfully</Alert>}
       {loading ? (
         <div
           className="d-flex justify-content-center align-items-center"
@@ -49,9 +66,8 @@ const HomePage = () => {
             </tr>
           </thead>
           <tbody>
-            {employees &&
-              employees.map((employee) => {
-                return (
+            {employees && employees.length > 0?
+               employees.map((employee) =>(
                   <tr key={employee.id}>
                     <td>{employee.name}</td>
                     <td>{employee.user_name}</td>
@@ -60,11 +76,17 @@ const HomePage = () => {
                       <Button variant="secondary">Edit</Button>
                     </td>
                     <td>
-                      <Button variant="danger">Delete</Button>
+                      <Button onClick={()=>handleDelete(employee.id)} variant="danger">Delete</Button>
                     </td>
                   </tr>
-                );
-              })}
+                )
+              )
+            : (
+               <tr>
+                <td colSpan="5">No record found!</td>
+              </tr>
+            )
+          }
           </tbody>
         </Table>
       )}

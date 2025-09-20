@@ -13,9 +13,27 @@ code {
     monospace;
 }
 
-.tableContainer{
+.container{
   display: "flex";
   align-items: "center";
   justify-content:"center";
+}
+
+.tableContainer{
   margin-top: 2%;
 }
+.formContainer{
+  border: 2px solid black;
+  border-radius: 16px;
+  padding: 5%;
+  margin-top: 2%;
+}
+.formBox {
+  width: 100%;
+  max-width: 500px;
+}
+.submitButton{
+  margin-top: 10%;
+}
+
+

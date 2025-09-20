@@ -1,12 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./Components/Home/HomePage";
 import MyNavbar from "./Components/Navbar/MyNavbar";
-import Add_Employee from "./Components/AddEmployee/Add_Employee";
+import AddEmployee from "./Components/AddEmployee/AddEmployee";
 
-// Define routes as objects
 const routes = [
   { path: "/", element: <HomePage /> },
-  { path: "/addEmployee", element: <Add_Employee /> },
+  { path: "/addEmployee", element: <AddEmployee /> },
 ];
 
 function App() {
