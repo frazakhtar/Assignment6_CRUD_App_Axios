@@ -1,7 +1,9 @@
+import MyNavbar from "./Components/Navbar/MyNavbar";
+
 function App() {
   return (
     <div className="App">
-        Test Text
+       <MyNavbar />
     </div>
   );
 }
