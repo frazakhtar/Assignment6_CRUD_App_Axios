@@ -1,88 +1,92 @@
 import React from 'react';
 import { Alert, Button, Container, Form, Spinner } from 'react-bootstrap';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+
 const AddEmployee = () => {
-  const [formData, setFormData]= React.useState({"name":'',"email":'',"user_name":''})
+  const notify =()=>toast("User Added Successfully")
+  const [formData, setFormData] = React.useState({ name: '', email: '', user_name: '' });
   const [loading, setLoading] = React.useState(false);
-  const [success, setSuccess] = React.useState(false);
-  const [error, setError] = React.useState("");
-  const handlechange=(e)=>{
-    console.log(e.target.value)
-    setFormData((prev)=>{
-      return{...prev,[e.target.name]:e.target.value}
-    })
-}
+  const [error, setError] = React.useState('');
 
-const baseUrl="https://68ce761d6dc3f350777f0bfa.mockapi.io/crud"
+  const baseUrl = 'https://68ce761d6dc3f350777f0bfa.mockapi.io/crud';
 
-const handleSubmit=async(e)=>{
+  const handlechange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setSuccess(false);
-    setError("");
-    console.log(formData)
-     try {
+    setError('');
+    try {
       const response = await axios.post(baseUrl, formData);
-      console.log("Response:", response.data);
-      setSuccess(true);
-      setFormData({ name: "", email: "", user_name: "" });
-      setTimeout(()=>{
-        setSuccess(false)
-      },3000)
+      notify();
+      setFormData({ name: '', email: '', user_name: '' });
     } catch (err) {
       console.error(err);
-      setError("Failed to submit. Please try again.");
+      setError('Failed to submit. Please try again.');
     } finally {
       setLoading(false);
     }
-}
+  };
 
   return (
-    <Container style={{maxWidth: "600px"}} className='formContainer d-flex justify-content-center align-items-center'>
-      <div className='formBox'>
-      <div style={{display:"flex", alignItems:"center",justifyContent:"center",fontSize:"30px"}}>Add Employee Form</div>
-      {success && <Alert variant="success">Employee added successfully!</Alert>}
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId='formName'>
-          <Form.Label> Name </Form.Label>
-          <Form.Control
-          name="name"
-          type="text"
-          placeholder='Name'
-          value={formData.name}
-          onChange={handlechange}
-          required
-          />
-          <Form.Label> Email </Form.Label>
-          <Form.Control
-          name="email"
-          type="text"
-          placeholder='Email'
-          value={formData.email}
-          onChange={handlechange}
-          required
-          />
-          <Form.Label> UserName </Form.Label>
-          <Form.Control
-          name="user_name"
-          type="text"
-          placeholder='UserName'
-          value={formData.user_name}
-          onChange={handlechange}
-          required
-          />
-        </Form.Group>
-        <div className="d-flex justify-content-center">
+    <Container
+      className="p-3 d-flex justify-content-center align-items-center"
+    >
+       <ToastContainer />
+      <div className="w-100" style={{ maxWidth: '400px' }}>
+        <h3 className="text-center mb-4">Add Employee</h3>
 
-         <Button className='submitButton' variant="primary" type="submit">
-          {loading ? <Spinner animation="border" size="sm" /> : "Submit"}
-        </Button>
-        </div>
-      </Form>
+        {error && <Alert variant="danger">{error}</Alert>}
+
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="formName">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              name="name"
+              type="text"
+              placeholder="Name"
+              value={formData.name}
+              onChange={handlechange}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              name="email"
+              type="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handlechange}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-4" controlId="formUserName">
+            <Form.Label>UserName</Form.Label>
+            <Form.Control
+              name="user_name"
+              type="text"
+              placeholder="UserName"
+              value={formData.user_name}
+              onChange={handlechange}
+              required
+            />
+          </Form.Group>
+
+          <div className="d-flex justify-content-center">
+            <Button variant="primary" type="submit" className="w-100">
+              {loading ? <Spinner animation="border" size="sm" /> : 'Submit'}
+            </Button>
+          </div>
+        </Form>
       </div>
     </Container>
-  )
-}
+  );
+};
 
-export default AddEmployee
+export default AddEmployee;
