@@ -2,8 +2,10 @@ import React from 'react';
 import { Alert, Button, Container, Form, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 const AddEmployee = () => {
+   const navigate = useNavigate();
   const notify =()=>toast("User Added Successfully")
   const [formData, setFormData] = React.useState({ name: '', email: '', user_name: '' });
   const [loading, setLoading] = React.useState(false);
@@ -20,7 +22,7 @@ const AddEmployee = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.post(baseUrl, formData);
+      await axios.post(baseUrl, formData);
       notify();
       setFormData({ name: '', email: '', user_name: '' });
     } catch (err) {
@@ -28,6 +30,7 @@ const AddEmployee = () => {
       setError('Failed to submit. Please try again.');
     } finally {
       setLoading(false);
+      navigate("/")
     }
   };
 
