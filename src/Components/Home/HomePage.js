@@ -40,12 +40,11 @@ const HomePage = () => {
 
    const handleDeleteClick = (employee) => {
     setCurrentEmployee(employee);
-    console.log("this is test",employee)
     setShowDeleteModal(true);
   };
 
   return (
-    <Container  className="tableContainer overflow-x-scroll">
+    <Container  className="tableContainer overflow-x-auto">
       <ToastContainer />
       {loading ? (
         <Table striped bordered hover className="text-center">
@@ -112,7 +111,6 @@ const HomePage = () => {
                       <span className="d-none d-sm-inline">Edit</span>
                     </Button>
                     <Button
-                      // onClick={() => handleDelete(employee.id, setEmployees,  showDeleteModal, setShowDeleteModal, employee)}
                       onClick={()=>handleDeleteClick(employee)}
                       variant="danger"
                     >
